@@ -10,13 +10,13 @@ require 'database.php';
 
 $message = '';
 
-if(!empty($_POST['email']) && !empty($_POST['password'])):
+if(!empty($_POST['username']) && !empty($_POST['password'])):
 	
 	// Enter the new user in the database
-	$sql = "INSERT INTO users (email, password) VALUES (:email, :password)";
+	$sql = "INSERT INTO users (username, password) VALUES (:username, :password)";
 	$stmt = $conn->prepare($sql);
 
-	$stmt->bindParam(':email', $_POST['email']);
+	$stmt->bindParam(':username', $_POST['username']);
 	$stmt->bindParam(':password', password_hash($_POST['password'], PASSWORD_BCRYPT));
 
 	if( $stmt->execute() ):
@@ -25,22 +25,7 @@ if(!empty($_POST['email']) && !empty($_POST['password'])):
 		$message = 'Sorry there must have been an issue creating your account';
 	endif;
 
-endif;
-
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Register Below</title>
-	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-	<link href='http://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet' type='text/css'>
-</head>
-<body>
-
-	<div class="header">
-		<a href="/">Your App Name</a>
-	</div>
+endif;?>
 
 	<?php if(!empty($message)): ?>
 		<p><?= $message ?></p>
@@ -51,7 +36,7 @@ endif;
 
 	<form action="register.php" method="POST">
 		
-		<input type="text" placeholder="Enter your email" name="email">
+		<input type="text" placeholder="Enter your username" name="username">
 		<input type="password" placeholder="and password" name="password">
 		<input type="password" placeholder="confirm password" name="confirm_password">
 		<input type="submit">
